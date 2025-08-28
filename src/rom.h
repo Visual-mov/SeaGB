@@ -34,6 +34,7 @@ typedef enum cart_type {
     // MBC_HuC1_RAM_BATTERY,
 } cart_type;
 
+// NOTE: this structure might not be needed
 typedef struct rom_context_t {
     char *title;
     uint8_t sgb_flag, gbc_flag;  // SNES super gameboy and gameboy color flags
