@@ -27,5 +27,5 @@ clean:
 
 
 seagb.o: seagb.c common.h
-gb.o: gb.c gb.h
-rom.o: rom.c rom.h
+gb.o: gb.c gb.h common.h
+rom.o: rom.c rom.h common.h

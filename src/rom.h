@@ -47,5 +47,6 @@ typedef struct rom_context_t {
 } rom_context_t;
 
 rom_context_t *load_rom(char *path);
+void free_rom(rom_context_t *ctx);
 
 #endif
