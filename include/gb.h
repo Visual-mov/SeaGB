@@ -12,7 +12,7 @@ typedef struct gb_state_t {
     uint16_t SP, PC;     // stack-pointer, program-counter 
 
     uint8_t mem[0xFFFF];
-    bool fz, fn, fh, fc; // zero, subtraction, half-carry and carry flags
+    uint8_t fz, fn, fh, fc; // zero, subtraction, half-carry and carry flags
 
 } gb_state_t;
 

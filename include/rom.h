@@ -41,9 +41,6 @@ typedef struct rom_context_t {
     cart_type type;
     uint8_t rom_size, ram_size;
     uint8_t *rom;      // ROM machine code array
-
-    //uint8_t publisher; // licensee code
-
 } rom_context_t;
 
 rom_context_t *load_rom(char *path);

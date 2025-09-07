@@ -36,8 +36,8 @@ uint8_t gb_read_n(gb_state_t *gb) {
 }
 uint16_t gb_read_nn(gb_state_t *gb) {
     // convert to big endian
-    uint8_t ls = gb_read_n(gb);
-    return gb_read_n(gb) << 8 | ls;
+    uint8_t lsb = gb_read_n(gb);
+    return gb_read_n(gb) << 8 | lsb;
 }
 
 void gb_execute_cycle(gb_state_t *gb) {

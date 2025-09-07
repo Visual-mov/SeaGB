@@ -1,31 +1,32 @@
-.SUFFIXES: .c .o
-
 CC = gcc
-CCFLAGS = -std=c99 -pedantic -Wall
-VPATH = src:./src
+CCFLAGS = -pedantic -Wall -Wextra
+LFLAGS = -lSDL2
 
-EXEC = seagb
-OBJS = seagb.o rom.o gb.o
+SRCDIR = ./src
+INCDIR = ./include
+OBJDIR = ./obj
+BINDIR = ./
 
-${EXEC}: ${OBJS}
-	${CC} ${CCFLAGS} -o ${EXEC} ${OBJS}
+EXEC = ./seagb
 
-.c.o:
-	${CC} ${CCFLAGS} -c $<
+SOURCES = $(wildcard $(SRCDIR)/*.c)
+OBJECTS = $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SOURCES))
 
-run: ${EXEC}
-	./${EXEC}
+INCLUDE_FLAGS = -I$(INCDIR)
 
-valgrind: ${EXEC}
-	valgrind --leak-check=full ./${EXEC}
+.PHONY: all clean mkdir_obj
 
-gdb: ${EXEC}
-	gdb ./${EXEC}
+all: mkdir_obj $(BINDIR)/$(EXEC)
+
+$(BINDIR)/$(EXEC): $(OBJECTS)
+	$(CC) $(OBJECTS) -o $@ $(LFLAGS)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) $(INCLUDE_FLAGS) -c $< -o $@
+
+mkdir_obj:
+	mkdir -p $(OBJDIR)
 
 clean:
-	rm -f ${EXEC} ${OBJS}
-
-
-seagb.o: seagb.c common.h
-gb.o: gb.c gb.h common.h
-rom.o: rom.c rom.h common.h
+	rm -rf $(OBJDIR) $(EXEC)
