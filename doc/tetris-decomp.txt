@@ -1,0 +1,5 @@
+0x0100: JP $150        -- entry code (16 T-cycles, 4 M-cycles)
+0x0150: JP $20C        -- (16 T-cycles, 4 M-cycles)
+0x020C: XOR A, A       -- This zeros out the accumulator, and sets the flags reg to 0b1000 (4 T-cycles, 1 M-cycle)
+0x020D: LD HL, 0xDFFF  -- loads immediate 16-bit value into HL
+0x020E: LD C, 0x10     -- loads immediate 8-bit value into C

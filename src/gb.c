@@ -81,6 +81,8 @@ void gb_execute_cycle(gb_state_t *gb) {
     }
 }
 
+/* update functions */
+
 void gb_update_timers(gb_state_t *gb) {
 
 }

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <SDL2/SDL.h>
-
 #include "rom.h"
 #include "gb.h"
 #include "common.h"
@@ -18,6 +17,7 @@ int main(int argc, char *argv[]) {
         SDL_Quit();
         exit(1);
     }
+    SDL_SetWindowResizable(window, SDL_FALSE);
 
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     if (renderer == NULL) {
@@ -28,6 +28,8 @@ int main(int argc, char *argv[]) {
     }
 
     SDL_Event event;
+    uint64_t lastTime = 0;
+    uint64_t time = 0;
     int active = 1;
     
     while(active) {
@@ -40,7 +42,7 @@ int main(int argc, char *argv[]) {
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
 
-        //SDL_Delay(10); // Small delay to prevent busy-waiting
+        time = SDL_GetTicks();
     }
 
     SDL_DestroyWindow(window);
