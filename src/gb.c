@@ -31,26 +31,30 @@ void free_gb(gb_state_t *gb) {
 }
 
 // Reads a byte from memory and advances the program counter
-uint8_t gb_read_n(gb_state_t *gb) {
+u8 gb_read_n(gb_state_t *gb) {
     return gb->mem[gb->PC++];
 }
-uint16_t gb_read_nn(gb_state_t *gb) {
+u16 gb_read_nn(gb_state_t *gb) {
     // convert to big endian
-    uint8_t lsb = gb_read_n(gb);
+    u8 lsb = gb_read_n(gb);
     return gb_read_n(gb) << 8 | lsb;
 }
 
 void gb_execute_cycle(gb_state_t *gb) {
-    uint16_t op_addr = gb->PC;
-    uint8_t op = gb_read_n(gb);
+    u16 op_addr = gb->PC;
+    u8 op = gb_read_n(gb);
 
-    uint16_t addr;
+    u16 addr;
 
     switch(op) {
         default: /* invalid opcode PANIC! */
             EMU_ERR("Unknown opcode %02X encountered at: %04X", op, op_addr);
             break;
 
+        /* 8-bit loads */
+        
+        
+        /* jumps */
         case 0xC3: // Unconditional jump: (JP nn)
             addr = gb_read_nn(gb);
             GB_LOG_OP(op_addr, "JP $%04X", addr);
@@ -90,4 +94,6 @@ void gb_update_flags(gb_state_t *gb) {
     // convert flag vars into nibble for F reg
 }
 
-void gb_update(gb_state_t *gb) {}
+void gb_update(gb_state_t *gb, SDL_Renderer *renderer, float dt) {
+    
+}

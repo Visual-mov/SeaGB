@@ -8,7 +8,9 @@ typedef uint8_t  u8;
 typedef uint16_t u16;
 typedef uint8_t  bool;
 
-#define FPS_CAP 60
+#define WIN_WIDTH      800
+#define WIN_HEIGHT     800
+#define FPS_CAP        60
 
 #define EMU_LOG(...) printf("info: ");\
                      printf(__VA_ARGS__);\

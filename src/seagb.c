@@ -6,12 +6,13 @@
 #include "common.h"
 
 int main(int argc, char *argv[]) {
+    /* init SDL */
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
         EMU_ERR("Couldn't initialize SDL: %s", SDL_GetError());
         exit(1);
     }
 
-    SDL_Window *window = SDL_CreateWindow("SeaGB", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 800, SDL_WINDOW_SHOWN);
+    SDL_Window *window = SDL_CreateWindow("SeaGB", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
     if(!window) {
         EMU_ERR("Couldn't initialize window: %s", SDL_GetError());
         SDL_Quit();
@@ -27,12 +28,18 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    /* application loop */
     SDL_Event event;
-    uint64_t lastTime = 0;
-    uint64_t time = 0;
+    uint64_t p_freq = SDL_GetPerformanceFrequency();
+
+    const double secs_per_frame = (double) 1 / FPS_CAP;
+    double frame_time = 0;
+    uint64_t frame_start = 0;
     int active = 1;
     
     while(active) {
+        frame_start = SDL_GetPerformanceCounter();
+
         while(SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT)
                 active = 0;
@@ -42,7 +49,19 @@ int main(int argc, char *argv[]) {
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
 
-        time = SDL_GetTicks();
+        frame_time = (double) (SDL_GetPerformanceCounter() - frame_start)/p_freq;
+
+        if (frame_time < secs_per_frame) {
+            double delay = (secs_per_frame - frame_time) * 1000.0;
+            if (delay > 0)
+                SDL_Delay(delay);
+
+            // Busy-wait the remainder (for sub-ms accuracy)
+            while ((double)(SDL_GetPerformanceCounter() - frame_start)/p_freq < secs_per_frame);
+        }
+
+        double duration = (double) (SDL_GetPerformanceCounter() - frame_start)/p_freq;
+        printf("FPS: %.3f\n", 1.0/duration);
     }
 
     SDL_DestroyWindow(window);
